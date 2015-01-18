@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script>
+    function initPage() {
+        var elEd = document.getElementById('editor');
+        elEd.contentEditable=true;
+        elEd.focus();
+    }
+</script>
+<style>
+	body{
+		background: black;
+		color: white;
+		font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+		font-size: 60px;
+		font-style: normal;
+		font-variant: normal;
+		font-weight: 500;
+		white-space: nowrap;
+		overflow: hidden;
+
+	}
+	.editor{
+		display:none;
+	}
+	[contenteditable]:focus { 
+		outline: 0px solid transparent; }
+</style>
+</head>
+<body onload="initPage()">
+    <article id="editor" contenteditable="true"></article>
+</body>
+<script>
+  	var socket = io();
+	var content_id = 'editor';  
+	var el = document.getElementById(content_id);
+	var str = "Type something here...";
+	var firstStroke = false;
+	var call = false;
+	max = 32;
+
+	$('#'+content_id).keydown(function(e){ 	
+		check_charcount(content_id, max, e);
+		firstStroke = true;  
+		checkStroke();
+		//console.log(firstStroke);
+	});
+
+	$('#'+content_id).keyup(function(){
+		socket.emit('message', el.innerHTML); 
+	});
+
+	function checkStroke(e){
+		if (call ==false){
+			if (firstStroke == true) el.innerHTML = '';
+			call = true;
+		}
+	}
+	
+	var count = 0;
+	setInterval(function(){
+		if (count<str.length)typeMessage(content_id,str);
+	},60);
+
+	function typeMessage(content_id, str){
+		var newString = $('#'+content_id).html() + str[count];
+		$('#'+content_id).html(newString);
+		//console.log(document.getElementById(content_id))
+		setCursor(el);
+		count ++;
+	}
+
+	function check_charcount(content_id, max, e){  
+		var el = document.getElementById(content_id);
+	     if(e.which == 13)  e.preventDefault();
+	     if(e.which != 8 && $('#'+content_id).text().length > max){
+			el.innerHTML = el.innerHTML.substring(1,el.length)
+			setCursor(el);
+	     }		
+	}
+
+	function setCursor(el){
+			var range = document.createRange();
+			var sel = window.getSelection();
+			range.setStart(el.childNodes[0], el.childNodes[0].length);
+			range.collapse(true);
+			sel.removeAllRanges();
+			sel.addRange(range);
+			//console.log(el.childNodes[0].length);
+	}
+
+	socket.on('message', function(msg){
+	     	// console.log("msg: " + msg);
+	     	// console.log("acutal text: "+ el.innerHTML);
+	     	el.innerHTML = msg;
+	     	setCursor(el);
+	 	});
+
+</script>
+
+
