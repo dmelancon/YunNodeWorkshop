@@ -10,6 +10,7 @@
         elEd.focus();
     }
 </script>
+
 <style>
 	body{
 		background: black;
@@ -34,6 +35,8 @@
     <article id="editor" contenteditable="true"></article>
 </body>
 <script>
+	// var snd = new Audio("file.wav"); // buffers automatically when created
+	// snd.play();
   	var socket = io();
 	var content_id = 'editor';  
 	var el = document.getElementById(content_id);
@@ -46,7 +49,6 @@
 		check_charcount(content_id, max, e);
 		firstStroke = true;  
 		checkStroke();
-		//console.log(firstStroke);
 	});
 
 	$('#'+content_id).keyup(function(){
@@ -54,7 +56,7 @@
 	});
 
 	function checkStroke(e){
-		if (call ==false){
+		if (call == false){
 			if (firstStroke == true) el.innerHTML = '';
 			call = true;
 		}
@@ -68,7 +70,6 @@
 	function typeMessage(content_id, str){
 		var newString = $('#'+content_id).html() + str[count];
 		$('#'+content_id).html(newString);
-		//console.log(document.getElementById(content_id))
 		setCursor(el);
 		count ++;
 	}
@@ -89,12 +90,9 @@
 			range.collapse(true);
 			sel.removeAllRanges();
 			sel.addRange(range);
-			//console.log(el.childNodes[0].length);
 	}
 
 	socket.on('message', function(msg){
-	     	// console.log("msg: " + msg);
-	     	// console.log("acutal text: "+ el.innerHTML);
 	     	el.innerHTML = msg;
 	     	setCursor(el);
 	 	});
