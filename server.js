@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var WebSocket = require('ws')
-  , ws = new WebSocket('ws://192.168.1.13:3000/');
+  , ws = new WebSocket('ws://128.122.6.45:3000/');
 
 ws.on('error', function(){
   console.log("Yun WS Server not found");
