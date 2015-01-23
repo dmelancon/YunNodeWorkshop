@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title> Working Title </title>
+
+		<style>
+
+			body {
+				width: 100%;
+				font-family: Arial, Verdana, sans-serif;
+				font-size: 100px;
+				padding-top: 100px;
+				background-color: hsl(0, 100%, 100%);
+			}
+
+		</style>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+
+			// ============================================================
+			// =================== GLOBAL VARIABLES =======================
+			// ============================================================
+
+			var socket;
+
+			// ============================================================
+			// ===================== LOAD + EVENTS ========================
+			// ============================================================
+
+			window.addEventListener('load', function(){
+
+				//connect to remote server
+				socket = io.connect('/');
+
+				//on connect, log a message
+				socket.on('connect', function(){
+					console.log("Connected to Socket Server");
+				});
+
+				socket.on('deltaEvent', function(data){	
+					var sensorDiv = document.getElementById('sensorValues');
+					sensorDiv.innerHTML = data;
+
+					document.body.style.backgroundColor= "hsl(" + data + ", 100%, 75%)";
+				});		
+
+			});		
+
+		</script>
+
+	</head>
+
+	<body>
+
+		<div id="sensorValues" align='center'>
+			Waiting ...
+		</div>
+
+	</body>
+
+</html>
