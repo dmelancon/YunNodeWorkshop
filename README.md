@@ -30,4 +30,7 @@
 
 #####How WS server works ( how we are using it)
 
-![DIAGRAM](http://www.blog.davidptracy.com/wp-content/uploads/2014/11/gyroDiagram-01.png)
+![DIAGRAM1](http://davidptracy.com/files/diagram-02.png
+)
+![DIAGRAM2](http://davidptracy.com/files/diagram-01.png
+)
