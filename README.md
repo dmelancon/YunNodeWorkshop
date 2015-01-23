@@ -34,3 +34,5 @@
 )
 ![DIAGRAM2](http://davidptracy.com/files/diagram-01.png
 )
+![DIAGRAM3]( http://davidptracy.com/files/serverDiagram-01.png
+)
